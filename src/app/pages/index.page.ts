@@ -1,28 +1,22 @@
-import { Component, signal } from '@angular/core';
+import { Component, signal, Input } from '@angular/core';
+import ZoomVideo from '@zoom/videosdk';
+import { FormControl, FormGroup, ReactiveFormsModule } from '@angular/forms';
 
 @Component({
   selector: 'app-home',
   standalone: true,
   template: `
-    <div>
-      <a href="https://analogjs.org/" target="_blank">
-        <img alt="Analog Logo" class="logo analog" src="/analog.svg" />
-      </a>
-    </div>
-
-    <h2>Analog</h2>
-
-    <h3>The fullstack meta-framework for Angular!</h3>
+    <h2>Video SDK with Angular + Analogjs</h2>
 
     <div class="card">
-      <button type="button" (click)="increment()">Count {{ count() }}</button>
+      <input [value]="sessionName()" (input)="updateName($event)" />
+      <button type="button" (click)="createSession()">Join Session</button>
     </div>
-
-    <p class="read-the-docs">
-      For guides on how to customize this project, visit the
-      <a href="https://analogjs.org" target="_blank">Analog documentation</a>
-    </p>
+  
   `,
+  imports: [                                                                                                                                                
+    ReactiveFormsModule
+  ],
   styles: [
     `
       .logo {
@@ -38,9 +32,15 @@ import { Component, signal } from '@angular/core';
   ],
 })
 export default class HomeComponent {
-  count = signal(0);
+  //save input as slug name
+  sessionName = signal('session name here');
 
-  increment() {
-    this.count.update((count) => count + 1);
+  createSession() {
+    //navigate to [slug].page.ts
+    console.log(this.sessionName())
   }
-}
+  
+  updateName(e: Event) {
+    this.sessionName.set((e.target as HTMLInputElement).value)
+  }
+}   
