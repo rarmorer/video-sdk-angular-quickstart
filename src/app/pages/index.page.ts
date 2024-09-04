@@ -1,43 +1,38 @@
-import { Component, signal, Input } from '@angular/core';
-import ZoomVideo from '@zoom/videosdk';
-import { FormControl, FormGroup, ReactiveFormsModule } from '@angular/forms';
+import { Component, inject } from '@angular/core';
+import { ReactiveFormsModule } from '@angular/forms';
+import { Router } from '@angular/router';
+import { dataService } from '../data.service';
+import {MatFormFieldModule} from '@angular/material/form-field';
 
 @Component({
   selector: 'app-home',
   standalone: true,
+  providers: [Router],
   template: `
-    <h2>Video SDK with Angular + Analogjs</h2>
+    <h1>Video SDK with Angular + Analogjs</h1>
 
     <div class="card">
-      <input [value]="sessionName()" (input)="updateName($event)" />
-      <button type="button" (click)="createSession()">Join Session</button>
+      <input placeholder="session name here" (input)="updateName($event)" />
+    </div>
+    <div>
+    <button type="button" (click)="createSession()">Create Session</button>
     </div>
   
   `,
   imports: [                                                                                                                                                
     ReactiveFormsModule
   ],
-  styles: [
-    `
-      .logo {
-        will-change: filter;
-      }
-      .logo:hover {
-        filter: drop-shadow(0 0 2em #646cffaa);
-      }
-      .read-the-docs {
-        color: #888;
-      }
-    `,
-  ],
 })
 export default class HomeComponent {
   //save input as slug name
-  sessionName = signal('session name here');
+  dataService = inject(dataService);
+  sessionName = this.dataService.sessionName;
+  router: Router = inject(Router)
 
   createSession() {
-    //navigate to [slug].page.ts
-    console.log(this.sessionName())
+    console.log(this.sessionName());
+    this.router.navigate(['Call', this.sessionName()])
+    
   }
   
   updateName(e: Event) {
