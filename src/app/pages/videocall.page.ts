@@ -12,9 +12,12 @@ import { getToken } from '../../server/routes/v1/getData';
   standalone: true,
   template: `
   <h2>Session: {{sessionName()}} </h2>
+  
+  <div [show] = "inSession()">
   <video-player-container>
-  <div id='sessionContainer'></div>
+    <div id='sessionContainer'></div>
   </video-player-container>
+  </div>
   
   <div>
   <button *ngIf="inSession()" (click)="leaveSession()">Leave Session</button> 
@@ -29,7 +32,17 @@ import { getToken } from '../../server/routes/v1/getData';
   </div>
   `,
   imports: [NgIf],
-  styles:['./videocall.css'],
+  styles:`
+  #sessionContainer {
+    height: "75vh";
+    margin-top: "1.5rem";
+    margin-left: "3rem";
+    margin-right: "3rem";
+    align-content: "center";
+    border-radius: "10px";
+    overflow: "hidden";
+  }
+  `,
   providers: [HomeComponent, pageComponent, getToken]
 
 })

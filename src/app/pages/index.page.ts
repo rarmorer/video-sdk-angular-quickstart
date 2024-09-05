@@ -2,7 +2,6 @@ import { Component, inject } from '@angular/core';
 import { ReactiveFormsModule } from '@angular/forms';
 import { Router } from '@angular/router';
 import { dataService } from '../data.service';
-import {MatFormFieldModule} from '@angular/material/form-field';
 
 @Component({
   selector: 'app-home',
