@@ -1,4 +1,4 @@
-import { Component, signal, Injectable } from '@angular/core';
+import { signal, Injectable } from '@angular/core';
 
 @Injectable({
   providedIn: 'root'
@@ -7,5 +7,4 @@ import { Component, signal, Injectable } from '@angular/core';
 export class dataService {
   sessionName = signal('session name here');
   jwt = signal('');
-  role = signal(1);
 }

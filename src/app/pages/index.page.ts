@@ -1,5 +1,4 @@
 import { Component, inject } from '@angular/core';
-import { ReactiveFormsModule } from '@angular/forms';
 import { Router } from '@angular/router';
 import { dataService } from '../data.service';
 
@@ -18,9 +17,6 @@ import { dataService } from '../data.service';
     </div>
   
   `,
-  imports: [                                                                                                                                                
-    ReactiveFormsModule
-  ],
 })
 export default class HomeComponent {
   //save input as slug name
