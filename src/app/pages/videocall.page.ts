@@ -13,21 +13,20 @@ import { getData } from '../../server/routes/v1/getData.server';
   template: `
   <h2>Session: {{sessionName()}} </h2>  
   <div [show] = "inSession()">
-  <video-player-container>
-    <div id='sessionContainer'></div>
-  </video-player-container>
+    <video-player-container>
+      <div id='sessionContainer'></div>
+    </video-player-container>
   </div>
   
   <div>
-  <button *ngIf="inSession()" (click)="leaveSession()">Leave Session</button> 
-  <button *ngIf="!inSession()" (click)="joinSession()">Join Session</button> 
+    <button *ngIf="inSession()" (click)="leaveSession()">Leave Session</button> 
+    <button *ngIf="!inSession()" (click)="joinSession()">Join Session</button> 
 
-  <button *ngIf="inSession() && !isVideoMuted()" (click)="onCameraClick()">Turn off Camera</button>
-  <button *ngIf="inSession() && isVideoMuted()" (click)="onCameraClick()">Turn on Camera</button>
-  <lucide-icon name="camera"></lucide-icon>
-  <button *ngIf="inSession() && !isAudioMuted()" (click)="onMicrophoneClick()">Mute</button>
-  <button *ngIf="inSession() && isAudioMuted()" (click)="onMicrophoneClick()">Unmute</button>
-
+    <button *ngIf="inSession() && !isVideoMuted()" (click)="onCameraClick()">Turn off Camera</button>
+    <button *ngIf="inSession() && isVideoMuted()" (click)="onCameraClick()">Turn on Camera</button>
+    <lucide-icon name="camera"></lucide-icon>
+    <button *ngIf="inSession() && !isAudioMuted()" (click)="onMicrophoneClick()">Mute</button>
+    <button *ngIf="inSession() && isAudioMuted()" (click)="onMicrophoneClick()">Unmute</button>
   </div>
   `,
   imports: [NgIf],
@@ -57,19 +56,16 @@ export default class VideoCallPageComponent {
 
   async joinSession() {
     this.sessionContainer = document.getElementById('sessionContainer');
-    // this.jwt.set(this.generateSignature(this.sessionName(), 1))
     this.jwt.set(await getData(this.sessionName()))
     console.log(this.sessionName(), ',', this.jwt(), ',', this.userName);
 
     await this.client.init("en-US", "Global", { patchJsMedia: true });
     this.client.on("peer-video-state-change", (payload) => void this.renderVideo(payload));
-    //change topic on backend to be passed through username
     await this.client.join(this.sessionName(), this.jwt(), this.userName).catch((e) => {
       console.log('error here', e)
     })
     this.inSession.set(true)
     const mediaStream = this.client.getMediaStream();
-    //add back in safari specific workarounds  
     await mediaStream.startAudio();
     this.isAudioMuted.set(this.client.getCurrentUserInfo().muted ?? true);
     await mediaStream.startVideo();
