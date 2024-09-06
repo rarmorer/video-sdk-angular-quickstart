@@ -1,26 +1,38 @@
-# Analog App
+# Zoom VideoSDK Next.js Quickstart
 
-This project was generated with [Analog](https://analogjs.org), the fullstack meta-framework for Angular.
+This repo contains a quickstart for using the Zoom VideoSDK with Angular and AnalogJS. 
 
-## Setup
+## Prerequisites
 
-Run `npm install` to install the application dependencies.
+- Node LTS
+- Bun (or NPM)
+- Zoom Video SDK Account
 
-## Development
+## Getting Started
 
-Run `npm start` for a dev server. Navigate to `http://localhost:5173/`. The application automatically reloads if you change any of the source files.
+1. Clone the repository
 
-## Build
+```bash
+$ git clone https://github.com/zoom/videosdk-angular-quickstart.git
+```
 
-Run `npm run build` to build the client/server project. The client build artifacts are located in the `dist/analog/public` directory. The server for the API build artifacts are located in the `dist/analog/server` directory.
+2. Install dependencies
 
-## Test
+```bash
+$ bun install # or npm install
+```
 
-Run `npm run test` to run unit tests with [Vitest](https://vitest.dev).
+3. Copy `.env.example` to `.env` and fill in your Zoom Video SDK credentials as:
 
-## Community
+```bash
+VITE_ZOOM_SDK_KEY="your-key"
+VITE_ZOOM_SDK_SECRET="your-secret"
+```
 
-- Visit and Star the [GitHub Repo](https://github.com/analogjs/analog)
-- Join the [Discord](https://chat.analogjs.org)
-- Follow us on [Twitter](https://twitter.com/analogjs)
-- Become a [Sponsor](https://github.com/sponsors/brandonroberts)
+4. Start the development server
+
+```bash
+$ bun dev # or npm run dev
+```
+
+You can open [http://localhost:5173](http://localhost:5173) with your browser to view the project.
