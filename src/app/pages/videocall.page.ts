@@ -5,14 +5,13 @@ import HomeComponent from './index.page';
 import { NgIf } from '@angular/common';
 import pageComponent from './Call/[slug].page';
 import { dataService } from '../data.service';
-import { getToken } from '../../server/routes/v1/getData';
+import { getData } from '../../server/routes/v1/getData.server';
 
 @Component({
   selector: 'app-videocall',
   standalone: true,
   template: `
-  <h2>Session: {{sessionName()}} </h2>
-  
+  <h2>Session: {{sessionName()}} </h2>  
   <div [show] = "inSession()">
   <video-player-container>
     <div id='sessionContainer'></div>
@@ -43,29 +42,23 @@ import { getToken } from '../../server/routes/v1/getData';
     overflow: "hidden";
   }
   `,
-  providers: [HomeComponent, pageComponent, getToken]
+  providers: [HomeComponent, pageComponent]
 
 })
 export default class VideoCallPageComponent {
   dataService = inject(dataService);
   sessionName = this.dataService.sessionName;
   jwt = this.dataService.jwt;
-  role = this.dataService.role
-  generateSignature = inject(getToken).generateSignature;
-
   sessionContainer: any;
   client = ZoomVideo.createClient();
   inSession = signal(false);
   isVideoMuted = signal(!this.client.getCurrentUserInfo()?.bVideoOn);
   isAudioMuted = signal(this.client.getCurrentUserInfo()?.muted ?? true);
 
-  constructor(public httpClient: HttpClient) {};
-
   async joinSession() {
-    console.log('joining session', import.meta.env['VITE_ZOOM_SDK_KEY'])
     this.sessionContainer = document.getElementById('sessionContainer');
-    this.jwt.set(this.generateSignature(this.sessionName(), 1))
-    
+    // this.jwt.set(this.generateSignature(this.sessionName(), 1))
+    this.jwt.set(await getData(this.sessionName()))
     console.log(this.sessionName(), ',', this.jwt(), ',', this.userName);
 
     await this.client.init("en-US", "Global", { patchJsMedia: true });
